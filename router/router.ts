@@ -7,6 +7,7 @@ import {
   updateAbegImage,
   updateAbeginfo,
   viewAbeg,
+  viewAllAbeg,
 } from "../controller/crowdAbegController";
 import { verified } from "../utils/verifier";
 
@@ -22,10 +23,12 @@ router.route("/:begID/update-beg").patch(updateAbeginfo);
 
 router.route("/:begID/update-beg").patch(myUpload, updateAbegImage);
 
+router.route("/view-begs").get(viewAllAbeg);
+
 router.route("/:begID/view-beg").get(viewAbeg);
 
 router.route("/:begID/delete-beg").delete(deleteAbeg);
 
-router.route("/:userID/:begID/love-beg").get(loveBeg);
+router.route("/:begID/love-beg").get(verified, loveBeg);
 
-router.route("/:userID/:begID/unlove-beg").get(unLoveBeg);
+router.route("/:begID/unlove-beg").get(verified, unLoveBeg);

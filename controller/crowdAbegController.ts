@@ -27,8 +27,7 @@ export const createAbeg = async (req: any, res: Response) => {
       // tnI8xnFmLdiObzC-t29ztA
     });
 
-    console.log("start");
-    publishConnection("abeg", abeg);
+    publishConnection("beg", abeg);
 
     return res.status(HTTP.CREATED).json({
       message: "Plead has being created successfully",
@@ -143,28 +142,38 @@ export const loveBeg = async (req: any, res: Response) => {
     const { id: userID } = req.user;
     const { begID } = req.params;
 
-    const user = await prisma.crowdAbeg.findUnique({
-      where: { id: userID },
-    });
-
     const abeg = await prisma.crowdAbeg.findUnique({
       where: { id: begID },
     });
 
-    if (user) {
-      const begee = abeg?.love.push(user?.id);
-      return res.status(HTTP.OK).json({
-        message: "you just loved this plead",
-        data: begee,
+    if (!abeg) {
+      return res.status(HTTP.NOT_FOUND).json({
+        message: "Plead not found",
+      });
+    }
+
+    if (abeg.love.includes(userID)) {
+      return res.status(HTTP.BAD_REQUEST).json({
+        message: "You have already loved this plead",
       });
     } else {
-      return res.status(HTTP.BAD_REQUEST).json({
-        message: "Unable to love plead",
+      abeg.love.push(userID);
+      await prisma.crowdAbeg.update({
+        where: { id: begID },
+        data: {
+          love: abeg.love,
+        },
+      });
+
+      return res.status(HTTP.CREATED).json({
+        message: "You just loved this plead",
+        data: abeg,
       });
     }
   } catch (error: any) {
     return res.status(HTTP.BAD_REQUEST).json({
-      message: `Error viewing plead: ${error}`,
+      message: `Error loving plead: ${error.message}`,
+      data: error,
     });
   }
 };
@@ -174,30 +183,42 @@ export const unLoveBeg = async (req: any, res: Response) => {
     const { id: userID } = req.user;
     const { begID } = req.params;
 
-    const user = await prisma.crowdAbeg.findUnique({
-      where: { id: userID },
-    });
-
     const abeg = await prisma.crowdAbeg.findUnique({
       where: { id: begID },
     });
 
-    if (user) {
-      const begee = abeg?.love.pop();
-      return res.status(HTTP.OK).json({
-        message: "you just loved this plead",
-        data: begee,
-      });
-    } else {
-      return res.status(HTTP.BAD_REQUEST).json({
-        message: "Unable to love plead",
+    if (!abeg) {
+      return res.status(HTTP.NOT_FOUND).json({
+        message: "Plead not found",
       });
     }
+
+    if (!abeg.love.includes(userID)) {
+      return res.status(HTTP.BAD_REQUEST).json({
+        message: "You have not loved this plead",
+      });
+    }
+
+    const unlikedUsers = abeg.love.filter((user) => user !== userID);
+
+    await prisma.crowdAbeg.update({
+      where: { id: begID },
+      data: {
+        love: unlikedUsers,
+      },
+    });
+
+    return res.status(HTTP.CREATED).json({
+      message: "You just unloved this plead",
+      data: {
+        love: unlikedUsers,
+      },
+    });
   } catch (error: any) {
     return res.status(HTTP.BAD_REQUEST).json({
-      message: `Error viewing plead: ${error}`,
+      message: `Error unloving plead: ${error.message}`,
+      data: error,
     });
   }
 };
-
 //SRFDiCSRxiHfEA5M9kEt5w

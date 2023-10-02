@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 
 import cors from "cors";
 import { HTTP, mainError } from "./error/mainError";
@@ -25,14 +25,17 @@ const appConfig = (app: Application) => {
       }
     });
 
-  app.all("*", () => {
-    new mainError({
-      name: "Route Error",
-      message: "this message is as a result of a wrong route",
-      status: HTTP.BAD_REQUEST,
-      success: false,
-    });
-  });
+  app.all(
+    "*",
+    (error: mainError, req: Request, res: Response, next: NextFunction) => {
+      new mainError({
+        name: "Route Error",
+        message: `this message is as a result of a wrong route: ${req.originalUrl}`,
+        status: HTTP.BAD_REQUEST,
+        success: false,
+      });
+    }
+  );
 };
 
 export default appConfig;
