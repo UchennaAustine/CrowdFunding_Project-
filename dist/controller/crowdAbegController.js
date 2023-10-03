@@ -26,7 +26,7 @@ const createAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 userID: id,
                 motivation,
                 detailDescription,
-                amountNeeded,
+                amountNeeded: parseInt(amountNeeded),
                 amountRaised: 0,
                 givers: [],
                 love: [],
@@ -35,7 +35,7 @@ const createAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 category: category.toLowerCase(),
             },
         });
-        (0, rabbitMQConnection_1.publishConnection)("begging", abeg);
+        (0, rabbitMQConnection_1.publishConnection)("beg", abeg);
         (0, rabbitMQConnection_1.publishConnection)("abeg", abeg);
         return res.status(mainError_1.HTTP.CREATED).json({
             message: "Plead has being created successfully",

@@ -17,7 +17,7 @@ const myUpload = multer().single("avatar");
 
 export const router = express.Router();
 
-router.route("/create-beg-start").post(verified, myUpload, createAbeg);
+router.route("/create-beg-start").post(myUpload, verified, createAbeg);
 
 router.route("/:begID/update-beg").patch(updateAbeginfo);
 

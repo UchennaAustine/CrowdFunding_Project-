@@ -18,7 +18,7 @@ export const createAbeg = async (req: any, res: Response) => {
         userID: id,
         motivation,
         detailDescription,
-        amountNeeded,
+        amountNeeded: parseInt(amountNeeded),
         amountRaised: 0,
         givers: [],
         love: [],
@@ -28,7 +28,7 @@ export const createAbeg = async (req: any, res: Response) => {
       },
     });
 
-    publishConnection("begging", abeg);
+    publishConnection("beg", abeg);
     publishConnection("abeg", abeg);
 
     return res.status(HTTP.CREATED).json({
