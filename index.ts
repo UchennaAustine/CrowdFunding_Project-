@@ -16,7 +16,7 @@ const server = app.listen(process.env.port || port, () => {
   console.log("A server is connected on port: ", port);
 });
 
-consumeConnection("checkouted");
+// consumeConnection("checkouted");
 
 process.on("unhandledRejection", (reason: any) => {
   console.log("unhandledRejection reason: ", reason);
