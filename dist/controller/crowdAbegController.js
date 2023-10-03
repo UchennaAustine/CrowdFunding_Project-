@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findAbegByCategory = exports.unLoveBeg = exports.loveBeg = exports.deleteAbeg = exports.updateAbegImage = exports.updateAbeginfo = exports.viewAllAbeg = exports.viewAbeg = exports.createAbeg = void 0;
+exports.findAbegByCategory = exports.unLoveBeg = exports.loveBeg = exports.deleteAbeg = exports.updateAbeginfo = exports.viewAllAbeg = exports.viewAbeg = exports.createAbeg = void 0;
 const client_1 = require("@prisma/client");
 const mainError_1 = require("../error/mainError");
 const rabbitMQConnection_1 = require("../utils/rabbitMQConnection");
@@ -19,6 +19,7 @@ const createAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { id } = req.user;
         const { title, motivation, detailDescription, amountNeeded, category } = req.body;
+        const { secure_url, public_id } = yield (0, stream_1.streamUpload)(req);
         const abeg = yield prisma.crowdAbeg.create({
             data: {
                 title,
@@ -29,8 +30,8 @@ const createAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 amountRaised: 0,
                 givers: [],
                 love: [],
-                picture: "",
-                pictureID: "",
+                picture: secure_url,
+                pictureID: public_id,
                 category: category.toLowerCase(),
             },
         });
@@ -104,29 +105,6 @@ const updateAbeginfo = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.updateAbeginfo = updateAbeginfo;
-const updateAbegImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { begID } = req.params;
-        const { secure_url, public_id } = yield (0, stream_1.streamUpload)(req);
-        const abeg = yield prisma.crowdAbeg.update({
-            where: { id: begID },
-            data: {
-                picture: secure_url,
-                pictureID: public_id,
-            },
-        });
-        return res.status(mainError_1.HTTP.CREATED).json({
-            message: "Image have being updated",
-            data: abeg,
-        });
-    }
-    catch (error) {
-        return res.status(mainError_1.HTTP.BAD_REQUEST).json({
-            message: `Error viewing plead: ${error}`,
-        });
-    }
-});
-exports.updateAbegImage = updateAbegImage;
 const deleteAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { begID } = req.params;

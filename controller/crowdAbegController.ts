@@ -11,6 +11,7 @@ export const createAbeg = async (req: any, res: Response) => {
     const { id } = req.user;
     const { title, motivation, detailDescription, amountNeeded, category } =
       req.body;
+    const { secure_url, public_id }: any = await streamUpload(req);
     const abeg = await prisma.crowdAbeg.create({
       data: {
         title,
@@ -21,8 +22,8 @@ export const createAbeg = async (req: any, res: Response) => {
         amountRaised: 0,
         givers: [],
         love: [],
-        picture: "",
-        pictureID: "",
+        picture: secure_url,
+        pictureID: public_id,
         category: category.toLowerCase(),
       },
     });
@@ -88,29 +89,6 @@ export const updateAbeginfo = async (req: Request, res: Response) => {
 
     return res.status(HTTP.CREATED).json({
       message: "Viewing plead",
-      data: abeg,
-    });
-  } catch (error: any) {
-    return res.status(HTTP.BAD_REQUEST).json({
-      message: `Error viewing plead: ${error}`,
-    });
-  }
-};
-
-export const updateAbegImage = async (req: Request, res: Response) => {
-  try {
-    const { begID } = req.params;
-    const { secure_url, public_id }: any = await streamUpload(req);
-    const abeg = await prisma.crowdAbeg.update({
-      where: { id: begID },
-      data: {
-        picture: secure_url,
-        pictureID: public_id,
-      },
-    });
-
-    return res.status(HTTP.CREATED).json({
-      message: "Image have being updated",
       data: abeg,
     });
   } catch (error: any) {

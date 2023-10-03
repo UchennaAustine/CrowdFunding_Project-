@@ -5,7 +5,6 @@ import {
   findAbegByCategory,
   loveBeg,
   unLoveBeg,
-  updateAbegImage,
   updateAbeginfo,
   viewAbeg,
   viewAllAbeg,
@@ -18,11 +17,9 @@ const myUpload = multer().single("avatar");
 
 export const router = express.Router();
 
-router.route("/create-beg-start").post(verified, createAbeg);
+router.route("/create-beg-start").post(verified, myUpload, createAbeg);
 
 router.route("/:begID/update-beg").patch(updateAbeginfo);
-
-router.route("/:begID/update-beg-image").patch(myUpload, updateAbegImage);
 
 router.route("/view-begs").get(viewAllAbeg);
 
