@@ -92,3 +92,77 @@ export const unLoveBeg = async (req: any, res: Response) => {
   }
 };
 
+if (abeg.category === categories.EDUCATION) {
+      const oneCategory = await prisma.crowdAbeg.findUnique({
+        where: { id: abeg.id },
+      });
+      oneCategory?.education.push(abeg.id);
+      // console.log("checking", oneCategory);
+
+      const myUpdate = await prisma.crowdAbeg.update({
+        where: { id: abeg.id },
+        data: {
+          education: abeg.education,
+        },
+      });
+      // console.log(myUpdate);
+    } else if (abeg.category === categories.ENVIRONMENT) {
+      const oneCategory = await prisma.crowdAbeg.findUnique({
+        where: { id: abeg.id },
+      });
+      oneCategory?.environment.push(abeg.id);
+      // console.log(oneCategory);
+
+      await prisma.crowdAbeg.update({
+        where: { id: abeg.id },
+        data: {
+          environment: abeg.environment,
+        },
+      });
+    } else if (category === categories.FINANCE) {
+      const oneCategory = await prisma.crowdAbeg.findUnique({
+        where: { id: abeg.id },
+      });
+      oneCategory?.finance.push(abeg.id);
+      console.log(oneCategory);
+
+      const myUpdate = await prisma.crowdAbeg.update({
+        where: { id: abeg.id },
+        data: {
+          finance: abeg.finance,
+        },
+      });
+      // console.log(myUpdate);
+    } else if (category === categories.HEALTH) {
+      const oneCategory = await prisma.crowdAbeg.findUnique({
+        where: { id: abeg.id },
+      });
+      oneCategory?.health.push(abeg.id);
+
+      const myUpdate = await prisma.crowdAbeg.update({
+        where: { id: abeg.id },
+        data: {
+          health: abeg.health,
+        },
+      });
+
+      // console.log(myUpdate);
+    } else if (
+      abeg.category !== categories.EDUCATION ||
+      categories.ENVIRONMENT ||
+      categories.FINANCE ||
+      categories.HEALTH
+    ) {
+      const oneCategory = await prisma.crowdAbeg.findUnique({
+        where: { id: abeg.id },
+      });
+      oneCategory?.others.push(abeg.id);
+
+      const myOthers = await prisma.crowdAbeg.update({
+        where: { id: abeg.id },
+        data: {
+          others: abeg.others,
+        },
+      });
+      // console.log(myOthers);
+    }

@@ -8,20 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.unLoveBeg = exports.loveBeg = exports.deleteAbeg = exports.updateAbegImage = exports.updateAbeginfo = exports.viewAllAbeg = exports.viewAbeg = exports.createAbeg = void 0;
+exports.findAbegByCategory = exports.unLoveBeg = exports.loveBeg = exports.deleteAbeg = exports.updateAbegImage = exports.updateAbeginfo = exports.viewAllAbeg = exports.viewAbeg = exports.createAbeg = void 0;
 const client_1 = require("@prisma/client");
 const mainError_1 = require("../error/mainError");
 const rabbitMQConnection_1 = require("../utils/rabbitMQConnection");
-const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
+const stream_1 = require("../utils/stream");
 const prisma = new client_1.PrismaClient();
 const createAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.user;
-        const { title, motivation, detailDescription, amountNeeded } = req.body;
+        const { title, motivation, detailDescription, amountNeeded, category } = req.body;
         const abeg = yield prisma.crowdAbeg.create({
             data: {
                 title,
@@ -34,10 +31,11 @@ const createAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 love: [],
                 picture: "",
                 pictureID: "",
+                category: category.toLowerCase(),
             },
-            // tnI8xnFmLdiObzC-t29ztA
         });
-        (0, rabbitMQConnection_1.publishConnection)("beg", abeg);
+        (0, rabbitMQConnection_1.publishConnection)("begging", abeg);
+        (0, rabbitMQConnection_1.publishConnection)("abeg", abeg);
         return res.status(mainError_1.HTTP.CREATED).json({
             message: "Plead has being created successfully",
             data: abeg,
@@ -107,10 +105,9 @@ const updateAbeginfo = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.updateAbeginfo = updateAbeginfo;
 const updateAbegImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
         const { begID } = req.params;
-        const { secure_url, public_id } = yield cloudinary_1.default.uploader.upload((_a = req === null || req === void 0 ? void 0 : req.file) === null || _a === void 0 ? void 0 : _a.path);
+        const { secure_url, public_id } = yield (0, stream_1.streamUpload)(req);
         const abeg = yield prisma.crowdAbeg.update({
             where: { id: begID },
             data: {
@@ -119,7 +116,7 @@ const updateAbegImage = (req, res) => __awaiter(void 0, void 0, void 0, function
             },
         });
         return res.status(mainError_1.HTTP.CREATED).json({
-            message: "Viewing plead",
+            message: "Image have being updated",
             data: abeg,
         });
     }
@@ -225,4 +222,23 @@ const unLoveBeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.unLoveBeg = unLoveBeg;
+const findAbegByCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { category } = req.body;
+        const findFinance = yield prisma.crowdAbeg.findMany({
+            where: { category },
+        });
+        console.log(findFinance);
+        return res.status(200).json({
+            message: "getting all category",
+            data: findFinance,
+        });
+    }
+    catch (error) {
+        res.status(404).json({
+            message: "Couldn't get all category",
+        });
+    }
+});
+exports.findAbegByCategory = findAbegByCategory;
 //SRFDiCSRxiHfEA5M9kEt5w

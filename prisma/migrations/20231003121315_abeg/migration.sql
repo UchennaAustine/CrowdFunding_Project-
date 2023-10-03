@@ -11,6 +11,12 @@ CREATE TABLE "crowdAbeg" (
     "pictureID" STRING NOT NULL,
     "givers" JSONB NOT NULL,
     "love" STRING[],
+    "category" STRING NOT NULL,
+    "health" STRING[],
+    "education" STRING[],
+    "environment" STRING[],
+    "finance" STRING[],
+    "others" STRING[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "crowdAbeg_pkey" PRIMARY KEY ("id")

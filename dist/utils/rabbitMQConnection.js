@@ -32,8 +32,9 @@ const consumeConnection = (queue) => __awaiter(void 0, void 0, void 0, function*
     try {
         const connection = yield amqplib_1.default.connect(amqpServer);
         const channel = yield connection.createChannel();
+        yield channel.assertQueue(queue);
         yield channel.consume(queue, (message) => __awaiter(void 0, void 0, void 0, function* () {
-            const allData = JSON.parse(message === null || message === void 0 ? void 0 : message.content.toString());
+            const allData = JSON.parse(JSON.parse(message === null || message === void 0 ? void 0 : message.content.toString()));
             const account = yield prisma.crowdAbeg.findUnique({
                 where: { id: allData === null || allData === void 0 ? void 0 : allData.abegID },
             });
@@ -47,6 +48,8 @@ const consumeConnection = (queue) => __awaiter(void 0, void 0, void 0, function*
                 },
             });
             yield channel.ack(message);
+            console.log(accountProf);
+            console.log("account", account);
         }));
     }
     catch (error) {

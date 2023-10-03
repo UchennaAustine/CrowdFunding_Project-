@@ -22,8 +22,10 @@ export const consumeConnection = async (queue: string) => {
     const connection = await amqplib.connect(amqpServer);
     const channel = await connection.createChannel();
 
+    await channel.assertQueue(queue);
+
     await channel.consume(queue, async (message: any) => {
-      const allData = JSON.parse(message?.content.toString());
+      const allData = JSON.parse(JSON.parse(message?.content.toString()));
 
       const account: any = await prisma.crowdAbeg.findUnique({
         where: { id: allData?.abegID },
@@ -40,6 +42,8 @@ export const consumeConnection = async (queue: string) => {
         },
       });
       await channel.ack(message);
+      console.log(accountProf);
+      console.log("account", account);
     });
   } catch (error: any) {
     console.log(`error occured while consuming: ${error}`);

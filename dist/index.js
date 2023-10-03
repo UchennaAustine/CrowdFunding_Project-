@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app_1 = __importDefault(require("./app"));
 const envVar_1 = require("./utils/envVar");
+const rabbitMQConnection_1 = require("./utils/rabbitMQConnection");
 process.on("uncaughtException", (error) => {
     console.log("uncaughtException error: ", error);
     process.exit(1);
@@ -16,6 +17,7 @@ const port = envVar_1.envVars.Port;
 const server = app.listen(process.env.port || port, () => {
     console.log("A server is connected on port: ", port);
 });
+(0, rabbitMQConnection_1.consumeConnection)("checkouted");
 process.on("unhandledRejection", (reason) => {
     console.log("unhandledRejection reason: ", reason);
     server.close(() => {

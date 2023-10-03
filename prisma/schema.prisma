@@ -27,5 +27,13 @@ model crowdAbeg {
   givers Json
   love   String[]
 
+  category String
+
+  health      String[]
+  education   String[]
+  environment String[]
+  finance     String[]
+  others      String[]
+
   createdAt DateTime @default(now())
 }

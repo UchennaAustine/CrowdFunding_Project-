@@ -2,6 +2,7 @@ import express from "express";
 import {
   createAbeg,
   deleteAbeg,
+  findAbegByCategory,
   loveBeg,
   unLoveBeg,
   updateAbegImage,
@@ -21,7 +22,7 @@ router.route("/create-beg-start").post(verified, createAbeg);
 
 router.route("/:begID/update-beg").patch(updateAbeginfo);
 
-router.route("/:begID/update-beg").patch(myUpload, updateAbegImage);
+router.route("/:begID/update-beg-image").patch(myUpload, updateAbegImage);
 
 router.route("/view-begs").get(viewAllAbeg);
 
@@ -32,3 +33,5 @@ router.route("/:begID/delete-beg").delete(deleteAbeg);
 router.route("/:begID/love-beg").get(verified, loveBeg);
 
 router.route("/:begID/unlove-beg").get(verified, unLoveBeg);
+
+router.route("/find-finance").get(findAbegByCategory);

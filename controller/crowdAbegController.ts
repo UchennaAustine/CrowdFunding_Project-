@@ -2,15 +2,15 @@ import { PrismaClient } from "@prisma/client";
 import express, { Request, Response } from "express";
 import { HTTP } from "../error/mainError";
 import { publishConnection } from "../utils/rabbitMQConnection";
-import cloudinary from "../utils/cloudinary";
+import { streamUpload } from "../utils/stream";
 
 const prisma = new PrismaClient();
 
 export const createAbeg = async (req: any, res: Response) => {
   try {
     const { id } = req.user;
-    const { title, motivation, detailDescription, amountNeeded } = req.body;
-
+    const { title, motivation, detailDescription, amountNeeded, category } =
+      req.body;
     const abeg = await prisma.crowdAbeg.create({
       data: {
         title,
@@ -23,11 +23,12 @@ export const createAbeg = async (req: any, res: Response) => {
         love: [],
         picture: "",
         pictureID: "",
+        category: category.toLowerCase(),
       },
-      // tnI8xnFmLdiObzC-t29ztA
     });
 
-    publishConnection("beg", abeg);
+    publishConnection("begging", abeg);
+    publishConnection("abeg", abeg);
 
     return res.status(HTTP.CREATED).json({
       message: "Plead has being created successfully",
@@ -99,9 +100,7 @@ export const updateAbeginfo = async (req: Request, res: Response) => {
 export const updateAbegImage = async (req: Request, res: Response) => {
   try {
     const { begID } = req.params;
-    const { secure_url, public_id } = await cloudinary.uploader.upload(
-      req?.file?.path!
-    );
+    const { secure_url, public_id }: any = await streamUpload(req);
     const abeg = await prisma.crowdAbeg.update({
       where: { id: begID },
       data: {
@@ -111,7 +110,7 @@ export const updateAbegImage = async (req: Request, res: Response) => {
     });
 
     return res.status(HTTP.CREATED).json({
-      message: "Viewing plead",
+      message: "Image have being updated",
       data: abeg,
     });
   } catch (error: any) {
@@ -218,6 +217,25 @@ export const unLoveBeg = async (req: any, res: Response) => {
     return res.status(HTTP.BAD_REQUEST).json({
       message: `Error unloving plead: ${error.message}`,
       data: error,
+    });
+  }
+};
+
+export const findAbegByCategory = async (req: Request, res: Response) => {
+  try {
+    const { category } = req.body;
+    const findFinance = await prisma.crowdAbeg.findMany({
+      where: { category },
+    });
+    console.log(findFinance);
+
+    return res.status(200).json({
+      message: "getting all category",
+      data: findFinance,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: "Couldn't get all category",
     });
   }
 };
