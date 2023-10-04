@@ -44,7 +44,8 @@ const createAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (error) {
         return res.status(mainError_1.HTTP.BAD_REQUEST).json({
-            message: `error due the creating process: ${error}`,
+            message: `error due the creating process: ${error.message}`,
+            error,
         });
     }
 });

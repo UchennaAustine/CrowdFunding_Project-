@@ -37,7 +37,8 @@ export const createAbeg = async (req: any, res: Response) => {
     });
   } catch (error: any) {
     return res.status(HTTP.BAD_REQUEST).json({
-      message: `error due the creating process: ${error}`,
+      message: `error due the creating process: ${error.message}`,
+      error,
     });
   }
 };
