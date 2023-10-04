@@ -15,7 +15,3 @@ export default (Schema: joi.ObjectSchema<any>) => {
     }
   };
 };
-
-// else {
-//     next();
-//   }
