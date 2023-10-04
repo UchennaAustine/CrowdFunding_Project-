@@ -134,7 +134,7 @@ const loveBeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 message: "Plead not found",
             });
         }
-        if (abeg.love.includes(userID)) {
+        if (abeg === null || abeg === void 0 ? void 0 : abeg.love.includes(userID)) {
             return res.status(mainError_1.HTTP.BAD_REQUEST).json({
                 message: "You have already loved this plead",
             });
@@ -144,7 +144,7 @@ const loveBeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             yield prisma.crowdAbeg.update({
                 where: { id: begID },
                 data: {
-                    love: abeg.love,
+                    love: abeg === null || abeg === void 0 ? void 0 : abeg.love,
                 },
             });
             return res.status(mainError_1.HTTP.CREATED).json({
@@ -178,7 +178,7 @@ const unLoveBeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 message: "You have not loved this plead",
             });
         }
-        const unlikedUsers = abeg.love.filter((user) => user !== userID);
+        const unlikedUsers = abeg === null || abeg === void 0 ? void 0 : abeg.love.filter((user) => user !== userID);
         yield prisma.crowdAbeg.update({
             where: { id: begID },
             data: {

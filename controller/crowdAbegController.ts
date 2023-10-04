@@ -119,7 +119,7 @@ export const loveBeg = async (req: any, res: Response) => {
     const { id: userID } = req.user;
     const { begID } = req.params;
 
-    const abeg = await prisma.crowdAbeg.findUnique({
+    const abeg: any = await prisma.crowdAbeg.findUnique({
       where: { id: begID },
     });
 
@@ -129,7 +129,7 @@ export const loveBeg = async (req: any, res: Response) => {
       });
     }
 
-    if (abeg.love.includes(userID)) {
+    if (abeg?.love.includes(userID)) {
       return res.status(HTTP.BAD_REQUEST).json({
         message: "You have already loved this plead",
       });
@@ -138,7 +138,7 @@ export const loveBeg = async (req: any, res: Response) => {
       await prisma.crowdAbeg.update({
         where: { id: begID },
         data: {
-          love: abeg.love,
+          love: abeg?.love,
         },
       });
 
@@ -160,7 +160,7 @@ export const unLoveBeg = async (req: any, res: Response) => {
     const { id: userID } = req.user;
     const { begID } = req.params;
 
-    const abeg = await prisma.crowdAbeg.findUnique({
+    const abeg: any = await prisma.crowdAbeg.findUnique({
       where: { id: begID },
     });
 
@@ -176,7 +176,7 @@ export const unLoveBeg = async (req: any, res: Response) => {
       });
     }
 
-    const unlikedUsers = abeg.love.filter((user) => user !== userID);
+    const unlikedUsers: any = abeg?.love.filter((user: any) => user !== userID);
 
     await prisma.crowdAbeg.update({
       where: { id: begID },
