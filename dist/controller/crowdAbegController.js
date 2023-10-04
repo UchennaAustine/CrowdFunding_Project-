@@ -32,7 +32,7 @@ const createAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 love: [],
                 picture: secure_url,
                 pictureID: public_id,
-                category: category.toLowerCase(),
+                category,
             },
         });
         (0, rabbitMQConnection_1.publishConnection)("beg", abeg);

@@ -10,7 +10,7 @@ CREATE TABLE "crowdAbeg" (
     "picture" STRING NOT NULL,
     "pictureID" STRING NOT NULL,
     "givers" JSONB NOT NULL,
-    "love" JSONB NOT NULL,
+    "love" STRING[],
     "category" STRING NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

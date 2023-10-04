@@ -24,7 +24,7 @@ export const createAbeg = async (req: any, res: Response) => {
         love: [],
         picture: secure_url,
         pictureID: public_id,
-        category: category.toLowerCase(),
+        category,
       },
     });
 

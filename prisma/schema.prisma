@@ -25,7 +25,7 @@ model crowdAbeg {
   pictureID String
 
   givers Json
-  love   Json
+  love   String[]
 
   category String
 

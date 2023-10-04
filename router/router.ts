@@ -12,12 +12,16 @@ import {
 import { verified } from "../utils/verifier";
 
 import multer from "multer";
+import { createAbegValidator } from "../utils/validator";
+import validatorHolder from "../utils/validatorHolder";
 
 const myUpload = multer().single("avatar");
 
 export const router = express.Router();
 
-router.route("/create-beg-start").post(myUpload, verified, createAbeg);
+router
+  .route("/create-beg-start")
+  .post(myUpload, verified, validatorHolder(createAbegValidator), createAbeg);
 
 router.route("/:begID/update-beg").patch(updateAbeginfo);
 
