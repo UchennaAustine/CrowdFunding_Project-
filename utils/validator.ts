@@ -5,5 +5,5 @@ export const createAbegValidator = joi.object({
   motivation: joi.string().trim().required(),
   detailDescription: joi.string().trim().required(),
   amountNeeded: joi.number().required(),
-  category: joi.string().lowercase().trim().required(),
+  // category: joi.string().lowercase().trim().required(),
 });

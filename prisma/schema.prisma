@@ -27,7 +27,5 @@ model crowdAbeg {
   givers Json
   love   String[]
 
-  category String
-
   createdAt DateTime @default(now())
 }

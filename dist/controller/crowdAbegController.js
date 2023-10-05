@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findAbegByCategory = exports.unLoveBeg = exports.loveBeg = exports.deleteAbeg = exports.updateAbeginfo = exports.viewAllAbeg = exports.viewAbeg = exports.createAbeg = void 0;
+exports.unLoveBeg = exports.loveBeg = exports.deleteAbeg = exports.updateAbeginfo = exports.viewAllAbeg = exports.viewAbeg = exports.createAbeg = void 0;
 const client_1 = require("@prisma/client");
 const mainError_1 = require("../error/mainError");
 const rabbitMQConnection_1 = require("../utils/rabbitMQConnection");
@@ -32,7 +32,7 @@ const createAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 love: [],
                 picture: secure_url,
                 pictureID: public_id,
-                category,
+                // category,
             },
         });
         (0, rabbitMQConnection_1.publishConnection)("beg", abeg);
@@ -201,23 +201,21 @@ const unLoveBeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.unLoveBeg = unLoveBeg;
-const findAbegByCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { category } = req.body;
-        const findFinance = yield prisma.crowdAbeg.findMany({
-            where: { category },
-        });
-        console.log(findFinance);
-        return res.status(200).json({
-            message: "getting all category",
-            data: findFinance,
-        });
-    }
-    catch (error) {
-        res.status(404).json({
-            message: "Couldn't get all category",
-        });
-    }
-});
-exports.findAbegByCategory = findAbegByCategory;
+// export const findAbegByCategory = async (req: Request, res: Response) => {
+//   try {
+//     const { category } = req.body;
+//     const findFinance = await prisma.crowdAbeg.findMany({
+//       where: { category },
+//     });
+//     console.log(findFinance);
+//     return res.status(200).json({
+//       message: "getting all category",
+//       data: findFinance,
+//     });
+//   } catch (error) {
+//     res.status(404).json({
+//       message: "Couldn't get all category",
+//     });
+//   }
+// };
 //SRFDiCSRxiHfEA5M9kEt5w

@@ -21,4 +21,4 @@ exports.router.route("/:begID/view-beg").get(crowdAbegController_1.viewAbeg);
 exports.router.route("/:begID/delete-beg").delete(crowdAbegController_1.deleteAbeg);
 exports.router.route("/:begID/love-beg").get(verifier_1.verified, crowdAbegController_1.loveBeg);
 exports.router.route("/:begID/unlove-beg").get(verifier_1.verified, crowdAbegController_1.unLoveBeg);
-exports.router.route("/find-finance").get(crowdAbegController_1.findAbegByCategory);
+// router.route("/find-finance").get(findAbegByCategory);

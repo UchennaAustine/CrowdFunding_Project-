@@ -2,7 +2,7 @@ import express from "express";
 import {
   createAbeg,
   deleteAbeg,
-  findAbegByCategory,
+  // findAbegByCategory,
   loveBeg,
   unLoveBeg,
   updateAbeginfo,
@@ -35,4 +35,4 @@ router.route("/:begID/love-beg").get(verified, loveBeg);
 
 router.route("/:begID/unlove-beg").get(verified, unLoveBeg);
 
-router.route("/find-finance").get(findAbegByCategory);
+// router.route("/find-finance").get(findAbegByCategory);
