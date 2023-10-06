@@ -10,5 +10,5 @@ exports.createAbegValidator = joi_1.default.object({
     motivation: joi_1.default.string().trim().required(),
     detailDescription: joi_1.default.string().trim().required(),
     amountNeeded: joi_1.default.number().required(),
-    // category: joi.string().lowercase().trim().required(),
+    category: joi_1.default.string().lowercase().trim().required(),
 });
