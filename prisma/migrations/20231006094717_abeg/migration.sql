@@ -9,9 +9,9 @@ CREATE TABLE "crowdAbeg" (
     "amountRaised" INT4 NOT NULL,
     "picture" STRING NOT NULL,
     "pictureID" STRING NOT NULL,
+    "category" STRING NOT NULL,
     "givers" JSONB NOT NULL,
     "love" STRING[],
-    "category" STRING NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "crowdAbeg_pkey" PRIMARY KEY ("id")

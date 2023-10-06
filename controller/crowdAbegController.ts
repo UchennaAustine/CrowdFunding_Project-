@@ -24,7 +24,7 @@ export const createAbeg = async (req: any, res: Response) => {
         love: [],
         picture: secure_url,
         pictureID: public_id,
-        // category,
+        category,
       },
     });
 
@@ -200,22 +200,22 @@ export const unLoveBeg = async (req: any, res: Response) => {
   }
 };
 
-// export const findAbegByCategory = async (req: Request, res: Response) => {
-//   try {
-//     const { category } = req.body;
-//     const findFinance = await prisma.crowdAbeg.findMany({
-//       where: { category },
-//     });
-//     console.log(findFinance);
+export const findAbegByCategory = async (req: Request, res: Response) => {
+  try {
+    const { category } = req.body;
+    const findFinance = await prisma.crowdAbeg.findMany({
+      where: { category },
+    });
+    console.log(findFinance);
 
-//     return res.status(200).json({
-//       message: "getting all category",
-//       data: findFinance,
-//     });
-//   } catch (error) {
-//     res.status(404).json({
-//       message: "Couldn't get all category",
-//     });
-//   }
-// };
+    return res.status(200).json({
+      message: "getting all category",
+      data: findFinance,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: "Couldn't get all category",
+    });
+  }
+};
 //SRFDiCSRxiHfEA5M9kEt5w
