@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model crowdAbeg {
+model abegs {
   id     String @id @default(uuid())
   userID String
 

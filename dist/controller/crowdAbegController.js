@@ -20,7 +20,7 @@ const createAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const { id } = req.user;
         const { title, motivation, detailDescription, amountNeeded, category } = req.body;
         const { secure_url, public_id } = yield (0, stream_1.streamUpload)(req);
-        const abeg = yield prisma.crowdAbeg.create({
+        const abeg = yield prisma.abegs.create({
             data: {
                 title,
                 userID: id,
@@ -53,7 +53,7 @@ exports.createAbeg = createAbeg;
 const viewAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { begID } = req.params;
-        const abeg = yield prisma.crowdAbeg.findUnique({
+        const abeg = yield prisma.abegs.findUnique({
             where: { id: begID },
         });
         return res.status(mainError_1.HTTP.OK).json({
@@ -70,7 +70,7 @@ const viewAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.viewAbeg = viewAbeg;
 const viewAllAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const abeg = yield prisma.crowdAbeg.findMany({});
+        const abeg = yield prisma.abegs.findMany({});
         return res.status(mainError_1.HTTP.OK).json({
             message: "Viewing plead",
             data: abeg,
@@ -87,7 +87,7 @@ const updateAbeginfo = (req, res) => __awaiter(void 0, void 0, void 0, function*
     try {
         const { begID } = req.params;
         const { motivation, detailDescription } = req.body;
-        const abeg = yield prisma.crowdAbeg.update({
+        const abeg = yield prisma.abegs.update({
             where: { id: begID },
             data: {
                 motivation,
@@ -109,7 +109,7 @@ exports.updateAbeginfo = updateAbeginfo;
 const deleteAbeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { begID } = req.params;
-        const abeg = yield prisma.crowdAbeg.delete({
+        const abeg = yield prisma.abegs.delete({
             where: { id: begID },
         });
         return res.status(mainError_1.HTTP.OK).json({
@@ -127,7 +127,7 @@ const loveBeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id: userID } = req.user;
         const { begID } = req.params;
-        const abeg = yield prisma.crowdAbeg.findUnique({
+        const abeg = yield prisma.abegs.findUnique({
             where: { id: begID },
         });
         if (!abeg) {
@@ -142,7 +142,7 @@ const loveBeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         else {
             abeg.love.push(userID);
-            yield prisma.crowdAbeg.update({
+            yield prisma.abegs.update({
                 where: { id: begID },
                 data: {
                     love: abeg === null || abeg === void 0 ? void 0 : abeg.love,
@@ -166,7 +166,7 @@ const unLoveBeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id: userID } = req.user;
         const { begID } = req.params;
-        const abeg = yield prisma.crowdAbeg.findUnique({
+        const abeg = yield prisma.abegs.findUnique({
             where: { id: begID },
         });
         if (!abeg) {
@@ -180,7 +180,7 @@ const unLoveBeg = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         const unlikedUsers = abeg === null || abeg === void 0 ? void 0 : abeg.love.filter((user) => user !== userID);
-        yield prisma.crowdAbeg.update({
+        yield prisma.abegs.update({
             where: { id: begID },
             data: {
                 love: unlikedUsers,
@@ -204,7 +204,7 @@ exports.unLoveBeg = unLoveBeg;
 const findAbegByCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { category } = req.body;
-        const findFinance = yield prisma.crowdAbeg.findMany({
+        const findFinance = yield prisma.abegs.findMany({
             where: { category },
         });
         console.log(findFinance);

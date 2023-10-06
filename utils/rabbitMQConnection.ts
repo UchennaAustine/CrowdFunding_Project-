@@ -27,13 +27,13 @@ export const consumeConnection = async (queue: string) => {
     await channel.consume(queue, async (message: any) => {
       const allData = JSON.parse(JSON.parse(message?.content.toString()));
 
-      const account: any = await prisma.crowdAbeg.findUnique({
+      const account: any = await prisma.abegs.findUnique({
         where: { id: allData?.abegID },
       });
 
       account?.givers.push(allData);
 
-      const accountProf: any = await prisma.crowdAbeg.update({
+      const accountProf: any = await prisma.abegs.update({
         where: { id: allData?.abegID },
         data: {
           givers: account?.givers,

@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "crowdAbeg" (
+CREATE TABLE "abegs" (
     "id" STRING NOT NULL,
     "userID" STRING NOT NULL,
     "title" STRING NOT NULL,
@@ -14,5 +14,5 @@ CREATE TABLE "crowdAbeg" (
     "love" STRING[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "crowdAbeg_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "abegs_pkey" PRIMARY KEY ("id")
 );

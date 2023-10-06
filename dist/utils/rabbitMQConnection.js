@@ -35,11 +35,11 @@ const consumeConnection = (queue) => __awaiter(void 0, void 0, void 0, function*
         yield channel.assertQueue(queue);
         yield channel.consume(queue, (message) => __awaiter(void 0, void 0, void 0, function* () {
             const allData = JSON.parse(JSON.parse(message === null || message === void 0 ? void 0 : message.content.toString()));
-            const account = yield prisma.crowdAbeg.findUnique({
+            const account = yield prisma.abegs.findUnique({
                 where: { id: allData === null || allData === void 0 ? void 0 : allData.abegID },
             });
             account === null || account === void 0 ? void 0 : account.givers.push(allData);
-            const accountProf = yield prisma.crowdAbeg.update({
+            const accountProf = yield prisma.abegs.update({
                 where: { id: allData === null || allData === void 0 ? void 0 : allData.abegID },
                 data: {
                     givers: account === null || account === void 0 ? void 0 : account.givers,

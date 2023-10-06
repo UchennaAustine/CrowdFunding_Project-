@@ -12,7 +12,7 @@ export const createAbeg = async (req: any, res: Response) => {
     const { title, motivation, detailDescription, amountNeeded, category } =
       req.body;
     const { secure_url, public_id }: any = await streamUpload(req);
-    const abeg = await prisma.crowdAbeg.create({
+    const abeg = await prisma.abegs.create({
       data: {
         title,
         userID: id,
@@ -46,7 +46,7 @@ export const createAbeg = async (req: any, res: Response) => {
 export const viewAbeg = async (req: Request, res: Response) => {
   try {
     const { begID } = req.params;
-    const abeg = await prisma.crowdAbeg.findUnique({
+    const abeg = await prisma.abegs.findUnique({
       where: { id: begID },
     });
 
@@ -63,7 +63,7 @@ export const viewAbeg = async (req: Request, res: Response) => {
 
 export const viewAllAbeg = async (req: Request, res: Response) => {
   try {
-    const abeg = await prisma.crowdAbeg.findMany({});
+    const abeg = await prisma.abegs.findMany({});
 
     return res.status(HTTP.OK).json({
       message: "Viewing plead",
@@ -80,7 +80,7 @@ export const updateAbeginfo = async (req: Request, res: Response) => {
   try {
     const { begID } = req.params;
     const { motivation, detailDescription } = req.body;
-    const abeg = await prisma.crowdAbeg.update({
+    const abeg = await prisma.abegs.update({
       where: { id: begID },
       data: {
         motivation,
@@ -102,7 +102,7 @@ export const updateAbeginfo = async (req: Request, res: Response) => {
 export const deleteAbeg = async (req: Request, res: Response) => {
   try {
     const { begID } = req.params;
-    const abeg = await prisma.crowdAbeg.delete({
+    const abeg = await prisma.abegs.delete({
       where: { id: begID },
     });
     return res.status(HTTP.OK).json({
@@ -120,7 +120,7 @@ export const loveBeg = async (req: any, res: Response) => {
     const { id: userID } = req.user;
     const { begID } = req.params;
 
-    const abeg: any = await prisma.crowdAbeg.findUnique({
+    const abeg: any = await prisma.abegs.findUnique({
       where: { id: begID },
     });
 
@@ -136,7 +136,7 @@ export const loveBeg = async (req: any, res: Response) => {
       });
     } else {
       abeg.love.push(userID);
-      await prisma.crowdAbeg.update({
+      await prisma.abegs.update({
         where: { id: begID },
         data: {
           love: abeg?.love,
@@ -161,7 +161,7 @@ export const unLoveBeg = async (req: any, res: Response) => {
     const { id: userID } = req.user;
     const { begID } = req.params;
 
-    const abeg: any = await prisma.crowdAbeg.findUnique({
+    const abeg: any = await prisma.abegs.findUnique({
       where: { id: begID },
     });
 
@@ -179,7 +179,7 @@ export const unLoveBeg = async (req: any, res: Response) => {
 
     const unlikedUsers: any = abeg?.love.filter((user: any) => user !== userID);
 
-    await prisma.crowdAbeg.update({
+    await prisma.abegs.update({
       where: { id: begID },
       data: {
         love: unlikedUsers,
@@ -203,7 +203,7 @@ export const unLoveBeg = async (req: any, res: Response) => {
 export const findAbegByCategory = async (req: Request, res: Response) => {
   try {
     const { category } = req.body;
-    const findFinance = await prisma.crowdAbeg.findMany({
+    const findFinance = await prisma.abegs.findMany({
       where: { category },
     });
     console.log(findFinance);
